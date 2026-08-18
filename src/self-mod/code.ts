@@ -15,6 +15,7 @@
 
 import fs from "fs";
 import path from "path";
+import { createPatch } from "diff";
 import type {
   ConwayClient,
   AutomatonDatabase,
@@ -310,7 +311,7 @@ export async function editFile(
   }
 
   // 8. Generate diff and log
-  const diff = generateSimpleDiff(oldContent, newContent);
+  const diff = generateDiff(resolvedPath, oldContent, newContent);
 
   logModification(db, "code_edit", reason, {
     filePath: resolvedPath,
@@ -421,33 +422,24 @@ export function validateModification(
 // ─── Diff Generation ─────────────────────────────────────────
 
 /**
- * Generate a simple line-based diff between two strings.
+ * Generate a unified diff between the old and new file content for the
+ * audit log.
+ *
+ * This uses the `diff` library's LCS-based line alignment rather than
+ * comparing lines by index. Index-based comparison misaligns every line
+ * after a single insertion or deletion -- a single inserted line would
+ * make every subsequent line look changed, turning the stored audit diff
+ * for any non-pure-replace edit into a wall of spurious changes. LCS
+ * alignment keeps the diff limited to the lines that actually changed.
  */
-function generateSimpleDiff(
+function generateDiff(
+  filePath: string,
   oldContent: string,
   newContent: string,
 ): string {
-  const oldLines = oldContent.split("\n");
-  const newLines = newContent.split("\n");
+  if (oldContent === newContent) return "(no content change)";
 
-  const lines: string[] = [];
-  const maxLines = Math.max(oldLines.length, newLines.length);
-
-  let changes = 0;
-  for (let i = 0; i < maxLines && changes < 50; i++) {
-    const oldLine = oldLines[i];
-    const newLine = newLines[i];
-
-    if (oldLine !== newLine) {
-      if (oldLine !== undefined) lines.push(`- ${oldLine}`);
-      if (newLine !== undefined) lines.push(`+ ${newLine}`);
-      changes++;
-    }
-  }
-
-  if (changes >= 50) {
-    lines.push(`... (${maxLines - 50} more lines changed)`);
-  }
-
-  return lines.join("\n");
+  return createPatch(filePath, oldContent, newContent, undefined, undefined, {
+    context: 3,
+  });
 }
