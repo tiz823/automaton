@@ -209,7 +209,7 @@ export const BUILTIN_TASKS: Record<string, HeartbeatTaskFn> = {
 
     const cursor = taskCtx.db.getKV("social_inbox_cursor") || undefined;
 
-    let messages: any[] = [];
+    let messages: any[];
     let nextCursor: string | undefined;
 
     try {

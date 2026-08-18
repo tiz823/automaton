@@ -53,6 +53,7 @@ const INJECTION_PATTERNS: RegExp[] = [
   /your\s+real\s+instructions?\s+(are|is)/i,
 
   // Encoding evasion
+  // eslint-disable-next-line no-control-regex -- intentional: detecting null-byte injection attempts
   /\x00/, // null bytes
   /\u200b/, // zero-width space
   /\u200c/, // zero-width non-joiner
@@ -194,6 +195,7 @@ function stripInjection(text: string): string {
 
   // Remove zero-width characters
   cleaned = cleaned
+    // eslint-disable-next-line no-control-regex -- intentional: stripping null-byte injection attempts
     .replace(/\x00/g, "")
     .replace(/\u200b/g, "")
     .replace(/\u200c/g, "")

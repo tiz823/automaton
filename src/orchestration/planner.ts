@@ -587,7 +587,7 @@ function parsePlannerResponse(content: string): unknown {
     return JSON.parse(content);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`Planner returned invalid JSON: ${message}`);
+    throw new Error(`Planner returned invalid JSON: ${message}`, { cause: error });
   }
 }
 

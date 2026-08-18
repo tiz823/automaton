@@ -233,7 +233,7 @@ export async function loadPlan(planFilePath: string): Promise<PlannerOutput> {
   try {
     parsed = JSON.parse(raw);
   } catch (error) {
-    throw new Error(`Invalid plan JSON at '${planFilePath}': ${toErrorMessage(error)}`);
+    throw new Error(`Invalid plan JSON at '${planFilePath}': ${toErrorMessage(error)}`, { cause: error });
   }
   return validatePlannerOutput(parsed);
 }

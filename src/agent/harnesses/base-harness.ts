@@ -101,8 +101,8 @@ export abstract class BaseHarness implements AgentHarness {
     }));
 
     let consecutiveInferenceErrors = 0;
-    let finalOutput = "";
-    let finalSuccess = true;
+    let finalOutput: string;
+    let finalSuccess: boolean;
 
     while (true) {
       this.checkBudget();
@@ -129,6 +129,7 @@ export abstract class BaseHarness implements AgentHarness {
         if (consecutiveInferenceErrors >= MAX_CONSECUTIVE_INFERENCE_ERRORS) {
           throw new Error(
             `${MAX_CONSECUTIVE_INFERENCE_ERRORS} consecutive inference failures. Last error: ${message}`,
+            { cause: error },
           );
         }
         continue;

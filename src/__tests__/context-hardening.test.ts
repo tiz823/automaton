@@ -8,6 +8,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import crypto from "node:crypto";
 import {
   buildContextMessages,
   estimateTokens,
@@ -505,7 +506,6 @@ describe("update_genesis_prompt tool hardening", () => {
 
   it("SOUL.md content hash tracking works", () => {
     const db = createTestDb();
-    const crypto = require("crypto");
 
     const content1 = "I am a test automaton.";
     const hash1 = crypto.createHash("sha256").update(content1).digest("hex");

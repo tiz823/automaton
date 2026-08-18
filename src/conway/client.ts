@@ -157,6 +157,7 @@ export function createConwayClient(options: ConwayClientOptions): ConwayClient {
           `Conway API authentication failed (403). Sandbox exec refused. ` +
             `This may indicate a misconfigured or revoked API key. ` +
             `Command will NOT be executed locally for security reasons.`,
+          { cause: err },
         );
       }
       throw err;
@@ -192,6 +193,7 @@ export function createConwayClient(options: ConwayClientOptions): ConwayClient {
         throw new Error(
           `Conway API authentication failed (403). File write refused. ` +
             `File will NOT be written locally for security reasons.`,
+          { cause: err },
         );
       }
       throw err;
@@ -216,6 +218,7 @@ export function createConwayClient(options: ConwayClientOptions): ConwayClient {
         throw new Error(
           `Conway API authentication failed (403). File read refused. ` +
             `File will NOT be read locally for security reasons.`,
+          { cause: err },
         );
       }
       throw err;

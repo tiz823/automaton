@@ -77,7 +77,7 @@ export async function spawnChild(
 
   const childId = ulid();
   let sandboxId: string | undefined;
-  let reusedSandbox: { id: string } | null = null;
+  let reusedSandbox: { id: string } | null;
 
   // If no lifecycle provided, use legacy path
   if (!lifecycle) {
@@ -252,7 +252,10 @@ async function spawnChildLegacy(
 
   const legacyTier = selectSandboxTier(childMemoryMb);
 
-  try {
+  // Note: sandbox deletion is disabled by the Conway API (prepaid,
+  // non-refundable), so there is no cleanup to perform on failure here.
+  // Errors simply propagate to the caller.
+  {
     const sandbox = await conway.createSandbox({
       name: `automaton-child-${genesis.name.toLowerCase().replace(/[^a-z0-9-]/g, "-")}`,
       vcpu: legacyTier.vcpu,
@@ -330,9 +333,6 @@ async function spawnChildLegacy(
     });
 
     return child;
-  } catch (error) {
-    // Sandbox deletion disabled — failed sandboxes left for potential reuse.
-    throw error;
   }
 }
 

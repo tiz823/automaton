@@ -275,7 +275,7 @@ export async function editFile(
 
   // 5. Read current content for diff. Uses the resolved real path so the
   // diff reflects what will actually be overwritten.
-  let oldContent = "";
+  let oldContent: string;
   try {
     oldContent = await conway.readFile(resolvedPath);
   } catch {

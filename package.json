@@ -42,6 +42,7 @@
     "dev": "tsx watch src/index.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
     "test:coverage": "vitest run --coverage",
     "test:security": "vitest run --grep 'security|injection|policy'",
     "test:financial": "vitest run --grep 'financial|spend|treasury'",
@@ -68,9 +69,13 @@
     "yaml": "^2.4.0"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@types/node": "^20.10.0",
+    "eslint": "10.8.1",
+    "eslint-plugin-security": "4.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.9.3",
+    "typescript-eslint": "8.67.0",
     "vitest": "^2.0.0"
   },
   "engines": {

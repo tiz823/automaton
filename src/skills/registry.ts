@@ -72,7 +72,7 @@ export async function installSkillFromGit(
       timeout: 60_000,
     });
   } catch (err: any) {
-    throw new Error(`Failed to clone skill repo: ${err.message}`);
+    throw new Error(`Failed to clone skill repo: ${err.message}`, { cause: err });
   }
 
   // Read SKILL.md using fs (no shell needed)
@@ -124,7 +124,7 @@ export async function installSkillFromUrl(
       timeout: 30_000,
     });
   } catch (err: any) {
-    throw new Error(`Failed to fetch SKILL.md from URL: ${err.message}`);
+    throw new Error(`Failed to fetch SKILL.md from URL: ${err.message}`, { cause: err });
   }
 
   // Read content using fs (no shell needed)

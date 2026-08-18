@@ -949,7 +949,7 @@ async function getFinancialState(
   db?: AutomatonDatabase,
   chainType?: string,
 ): Promise<FinancialState> {
-  let creditsCents = _lastKnownCredits;
+  let creditsCents: number;
   let usdcBalance = _lastKnownUsdc;
 
   try {

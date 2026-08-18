@@ -14,17 +14,15 @@ export interface WorkspaceFile {
   summary?: string;
 }
 
-export interface AgentWorkspace {
-  goalId: string;
-  basePath: string;
-  writeOutput(agentRole: string, filename: string, content: string): string;
-  readOutput(filename: string): string;
-  listOutputs(): WorkspaceFile[];
-  logDecision(decision: string, rationale: string, agentRole: string): void;
-  getSummary(): string;
-}
-
-export class AgentWorkspace implements AgentWorkspace {
+// Note: this used to also declare a separate `AgentWorkspace` interface with
+// the same member signatures, merged with this class declaration. Since the
+// class already has all of those members, the interface was redundant and
+// TypeScript's declaration merging between a class and an interface of the
+// same name is flagged as unsafe (a class's private members and an
+// interface's structural shape can silently diverge). The class name alone
+// already serves as both the value (constructor) and the type (instance
+// shape) that every other module in this codebase imports.
+export class AgentWorkspace {
   public goalId: string;
   public basePath: string;
 

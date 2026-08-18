@@ -45,7 +45,7 @@ export async function checkResources(
   } catch {}
 
   // Check sandbox health
-  let sandboxHealthy = true;
+  let sandboxHealthy: boolean;
   try {
     const result = await conway.exec("echo ok", 5000);
     sandboxHealthy = result.exitCode === 0;
